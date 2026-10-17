@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Lab Desk — Shakeel New Project Lab</title>
+  <meta name="description"
+    content="Lab Desk — offline-first IT lab ledger: lab systems, staff systems, fault desk, store room, purchases, black & white Excel sheets and print-ready A4 reports.">
+  <meta name="theme-color" content="#F3F1EA">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preload" href="data/lab-data.json" as="fetch" type="application/json" crossorigin>
+  <link rel="stylesheet" href="css/theme.css?v=1">
+  <link rel="stylesheet" href="css/shell.css?v=1">
+  <link rel="stylesheet" href="css/print.css?v=1">
+</head>
+
+<body>
+  <noscript>
+    <div class="nojs">Lab Desk needs JavaScript to run. Please enable it and reload.</div>
+  </noscript>
+
+  <!-- boot skeleton: painted before any script runs so the first frame is instant -->
+  <div id="boot" class="boot">
+    <div class="boot-mark" aria-hidden="true"></div>
+    <div class="boot-word">Lab Desk</div>
+    <div class="boot-bar"><i></i></div>
+  </div>
+
+  <div id="app" class="app" hidden>
+    <a class="skip" href="#view">Skip to data</a>
+
+    <aside class="rail" id="rail" aria-label="Main navigation">
+      <div class="rail-brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-txt">
+          <b>Lab&nbsp;Desk</b>
+          <i data-org>Aptech IT Lab Center</i>
+        </span>
+      </div>
+      <nav class="rail-nav" id="rail-nav"></nav>
+      <div class="rail-foot">
+        <button class="ghost-btn" id="btn-density" title="Toggle compact rows (D)">
+          <span class="gi gi-rows"></span><em>Comfortable</em>
+        </button>
+        <button class="ghost-btn" id="btn-theme" title="Switch paper / graphite (T)">
+          <span class="gi gi-moon"></span><em>Graphite</em>
+        </button>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="top">
+        <button class="icon-btn only-mobile" id="btn-rail" aria-label="Open menu"><span class="gi gi-menu"></span></button>
+        <div class="top-title">
+          <h1 id="page-title">Dashboard</h1>
+          <p id="page-sub">Fleet health at a glance</p>
+        </div>
+        <div class="top-tools">
+          <button class="search-btn" id="btn-search" title="Search everything ( / )">
+            <span class="gi gi-search"></span><em>Search records…</em><kbd>Ctrl</kbd><kbd>K</kbd>
+          </button>
+          <button class="chip live-chip" id="btn-live" title="Live JSON sync status">
+            <span class="dot"></span><em>Local only</em>
+          </button>
+          <button class="chip" id="btn-print" title="Print current view on one A4 page"><span class="gi gi-print"></span><em>Print</em></button>
+          <button class="chip" id="btn-export" title="Export black & white Excel"><span class="gi gi-xls"></span><em>Excel</em></button>
+          <button class="chip chip-solid" id="btn-new" title="New record (N)"><span class="gi gi-plus"></span><em id="btn-new-label">New PC</em></button>
+          <button class="icon-btn" id="btn-acc" title="Account / lock"><span class="gi gi-user"></span></button>
+        </div>
+      </header>
+
+      <div class="scroll" id="scroll">
+        <div class="scroll-prog"><i id="scroll-prog-bar"></i></div>
+        <main class="view" id="view" tabindex="-1"></main>
+        <div class="quik" id="quik" aria-hidden="true">
+          <div class="quik-head"><b>QUICK SCROLL</b><span id="quik-pos">0%</span></div>
+          <div class="quik-map" id="quik-map"></div>
+          <div class="quik-idx" id="quik-idx"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scrim" id="scrim" hidden></div>
+    <div id="layers"></div>
+    <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+  </div>
+
+  <script src="js/util.js?v=1"></script>
+  <script src="js/schema.js?v=1"></script>
+  <script src="js/db.js?v=1"></script>
+  <script src="js/live.js?v=1"></script>
+  <script src="js/ui.js?v=1"></script>
+  <script src="js/virt.js?v=1"></script>
+  <script src="js/excel.js?v=1"></script>
+  <script src="js/pages/collection.js?v=1"></script>
+  <script src="js/pages/dashboard.js?v=1"></script>
+  <script src="js/pages/data.js?v=1"></script>
+  <script src="js/auth.js?v=1"></script>
+  <script src="js/app.js?v=1"></script>
+</body>
+
+</html>

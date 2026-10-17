@@ -1,0 +1,14 @@
+{
+  "name": "Lab Desk — Shakeel New Project Lab",
+  "short_name": "Lab Desk",
+  "description": "Offline-first IT lab ledger: systems, faults, store, purchases, black & white Excel and A4 print sheets.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F3F1EA",
+  "theme_color": "#F3F1EA",
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
