@@ -1,0 +1,39 @@
+/* ═══════════════════════════════════════════════════
+   LabDesk — Print: full-page A4 report, black & white
+   ═══════════════════════════════════════════════════ */
+@media screen{ #printRoot{display:none!important} }
+
+@media print{
+  @page{ size:A4; margin:13mm 12mm; }
+  html,body{ background:#fff!important; overflow:visible!important; height:auto!important; }
+  body{ font-size:10.5pt; }
+  /* wipe the interactive app, keep only the report */
+  body > *:not(#printRoot){ display:none!important; }
+  #printRoot{ display:block!important; color:#000; }
+
+  .pr-head{ display:flex; justify-content:space-between; align-items:flex-end;
+    border-bottom:2.2pt solid #000; padding-bottom:8pt; margin-bottom:12pt; }
+  .pr-head h1{ font:600 20pt Georgia,serif; margin:0; letter-spacing:-.01em; }
+  .pr-head .org{ font-size:9.5pt; color:#333; margin-top:2pt; }
+  .pr-meta{ font-size:8.5pt; color:#222; text-align:right; line-height:1.7; }
+  .pr-meta b{ color:#000; }
+
+  .pr-summary{ display:flex; gap:10pt; margin-bottom:12pt; }
+  .pr-summary div{ flex:1; border:1pt solid #000; border-radius:6pt; padding:7pt 10pt; }
+  .pr-summary small{ display:block; font-size:7.2pt; text-transform:uppercase; letter-spacing:.08em; color:#444; }
+  .pr-summary b{ font-size:13pt; }
+
+  table.pr{ width:100%; border-collapse:collapse; font-size:8.8pt; }
+  table.pr th{ background:#000; color:#fff; text-align:left; padding:5pt 6pt;
+    font-size:7.4pt; text-transform:uppercase; letter-spacing:.05em; }
+  table.pr td{ padding:4.4pt 6pt; border-bottom:.5pt solid #bbb; vertical-align:top; }
+  table.pr tr{ page-break-inside:avoid; }
+  table.pr tbody tr:nth-child(even){ background:#f4f4f4; }
+  thead{ display:table-header-group; } /* repeat header on every page */
+
+  .pr-foot{ margin-top:12pt; border-top:1pt solid #000; padding-top:6pt;
+    display:flex; justify-content:space-between; font-size:7.8pt; color:#333; }
+  .pageno:after{ content:"Page " counter(page) " of " counter(pages); }
+
+  .pr-note{ margin-top:10pt; font-size:7.8pt; color:#333; }
+}
