@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>LabDesk — Shakeel New Project Lab</title>
+  <meta name="description" content="LabDesk by Shakeel — a fast, offline-first lab ledger. Excel-grade grids, fault desk, JSON database, print-ready reports. Black & white Claude-style design.">
+  <meta name="theme-color" content="#faf9f6">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preload" href="data/db.json" as="fetch" type="application/json" crossorigin>
+  <link rel="stylesheet" href="css/theme.css?v=3">
+  <link rel="stylesheet" href="css/app.css?v=3">
+  <link rel="stylesheet" href="css/print.css?v=3">
+</head>
+<body>
+  <noscript>
+    <div class="nojs">LabDesk needs JavaScript to run. Please enable JavaScript and reload this page.</div>
+  </noscript>
+
+  <!-- ══ Animated monochrome background ══ -->
+  <div class="bg-stage" aria-hidden="true">
+    <img class="bg-img" src="assets/img/bg-abstract.jpg" alt="" fetchpriority="high">
+    <div class="bg-tint"></div>
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="orb orb-c"></div>
+    <canvas class="bg-dust" id="bgDust"></canvas>
+    <div class="grain"></div>
+  </div>
+
+  <!-- ══ LOGIN GATE ══ -->
+  <section id="login" class="login" hidden>
+    <div class="login-card">
+      <div class="login-left">
+        <div class="login-brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <div>
+            <b>LabDesk</b>
+            <i>Shakeel New Project Lab</i>
+          </div>
+        </div>
+
+        <figure class="boy-card ai-frame">
+          <img src="assets/img/login-boy.jpg" alt="Lab owner portrait — AI Gemini style" loading="eager">
+          <figcaption>
+            <span class="ai-chip">✦ AI · Gemini style</span>
+            <b>Shakeel's Lab</b>
+            <i>Authorized access only</i>
+          </figcaption>
+        </figure>
+
+        <ul class="login-feats">
+          <li><b>Excel-grade</b> grids with instant virtual scroll</li>
+          <li><b>JSON database</b> — every edit saved automatically</li>
+          <li><b>Print-ready</b> full-page A4 reports</li>
+          <li><b>Live sync</b> between open tabs, works offline</li>
+        </ul>
+      </div>
+
+      <div class="login-right">
+        <h1>Welcome back</h1>
+        <p class="login-sub">Enter the lab passcode to continue</p>
+
+        <form id="loginForm" class="login-form" autocomplete="off" novalidate>
+          <label class="fld">
+            <span>Passcode</span>
+            <div class="pin-wrap">
+              <input id="pinInput" type="password" inputmode="numeric" placeholder="••••••••••"
+                     maxlength="24" aria-label="Lab passcode">
+              <button type="button" class="pin-eye" id="pinEye" aria-label="Show passcode">
+                <svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12zm10 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+              </button>
+            </div>
+            <em class="fld-hint">Default passcode is <b>45637189230</b> — change it anytime in Settings.</em>
+          </label>
+          <p class="login-err" id="loginErr" role="alert"></p>
+          <button class="btn btn-ink btn-block" type="submit">
+            <span>Unlock Lab</span>
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+
+        <div class="login-foot">
+          <span class="dot-live"></span> Local JSON mode · no account needed
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ APP SHELL ══ -->
+  <div id="app" class="app" hidden>
+    <a class="skip" href="#view">Skip to content</a>
+
+    <aside class="rail" id="rail">
+      <div class="rail-brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-txt">
+          <b>LabDesk</b>
+          <i>Shakeel New Project Lab</i>
+        </span>
+      </div>
+      <nav class="rail-nav" id="railNav" aria-label="Primary"></nav>
+      <div class="rail-foot">
+        <button class="ghost-btn" id="btnDensity" title="Toggle row density (D)">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <em>Comfortable</em>
+        </button>
+        <button class="ghost-btn" id="btnTheme" title="Switch paper / graphite (T)">
+          <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+          <em>Graphite</em>
+        </button>
+        <button class="ghost-btn" id="btnLock" title="Lock lab (L)">
+          <svg viewBox="0 0 24 24"><path d="M7 11V8a5 5 0 0 1 10 0v3m-11 0h12a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1z"/></svg>
+          <em>Lock</em>
+        </button>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="top">
+        <button class="icon-btn only-mobile" id="btnRail" aria-label="Open menu">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="top-title">
+          <h1 id="pageTitle">Dashboard</h1>
+          <p id="pageSub">Everything at a glance</p>
+        </div>
+        <div class="top-tools">
+          <button class="search-btn" id="btnSearch" title="Search everything ( / )">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <em>Search records…</em><kbd>/</kbd>
+          </button>
+          <button class="chip" id="btnLive" title="Live sync status">
+            <span class="dot-live"></span><em>Live</em>
+          </button>
+          <button class="chip" id="btnPrint" title="Print full-page report (P)">
+            <svg viewBox="0 0 24 24"><path d="M7 8V4h10v4m-9 8H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2m-8 4h10v-4H7v4z"/></svg>
+            <em>Print</em>
+          </button>
+          <button class="chip" id="btnExcel" title="Export current view to Excel / CSV">
+            <svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM14 3v5h5"/></svg>
+            <em>Excel</em>
+          </button>
+          <button class="chip chip-ink" id="btnNew" title="New record (N)">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            <em id="btnNewLabel">New Item</em>
+          </button>
+          <button class="avatar" id="btnAccount" title="Account & settings">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="scroll" id="scroll">
+        <div class="scroll-prog"><i id="scrollProg"></i></div>
+        <main class="view" id="view" tabindex="-1" data-route="dashboard"></main>
+      </div>
+    </div>
+
+    <!-- Velocity fast-scroll dock (new design) -->
+    <div class="velocity" id="velocity" aria-label="Fast scroll dock">
+      <svg class="vel-ring" viewBox="0 0 40 40">
+        <circle class="ring-bg" cx="20" cy="20" r="16"/>
+        <circle class="ring-fg" id="velRing" cx="20" cy="20" r="16"/>
+      </svg>
+      <span class="vel-pct" id="velPct">0%</span>
+      <div class="vel-dots" id="velDots"></div>
+      <button class="vel-btn" id="velTurbo" title="Hold to turbo-scroll">
+        <svg viewBox="0 0 24 24"><path d="M12 3v10m0 0-4-4m4 4 4-4M5 21h14"/></svg>
+      </button>
+      <button class="vel-btn" id="velTop" title="Back to top">
+        <svg viewBox="0 0 24 24"><path d="M12 21V9m0 0-5 5m5-5 5 5"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="layers"></div>
+  <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+  <div id="printRoot" class="print-root" aria-hidden="true"></div>
+
+  <script src="js/util.js?v=3"></script>
+  <script src="js/seed.js?v=3"></script>
+  <script src="js/db.js?v=3"></script>
+  <script src="js/auth.js?v=3"></script>
+  <script src="js/grid.js?v=3"></script>
+  <script src="js/scroll.js?v=3"></script>
+  <script src="js/pages.js?v=3"></script>
+  <script src="js/app.js?v=3"></script>
+</body>
+</html>
